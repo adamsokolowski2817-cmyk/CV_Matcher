@@ -1,0 +1,8 @@
+Jan Kowalski
+
+Student informatyki. Interesuję się programowaniem w Pythonie i analizą danych.
+Znam Python, SQL, Git, Linux, Excel, pandas, numpy oraz podstawy statystyki.
+Pracowałem z Jupyter Notebook, tworzyłem skrypty do analizy danych i wizualizacji.
+Znam język angielski na poziomie C1.
+Posiadam praktyczną znajomość Git, GitHub,Python, Azure, Java, JavaScript, Rust.
+Mam podstawową znajomość Java oraz testów jednostkowych.
