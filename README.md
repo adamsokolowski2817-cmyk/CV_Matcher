@@ -1,477 +1,100 @@
-# CV Matcher AI — Inteligentna analiza dopasowania CV do ofert pracy
+# CV Matcher
 
-## Opis projektu
+Aplikacja internetowa przeznaczona do automatycznej analizy i ewaluacji dopasowania dokumentów aplikacyjnych (CV) do aktualnych ofert pracy w branży IT. System samodzielnie agreguje ogłoszenia z popularnych portali rekrutacyjnych, analizuje ich treść za pomocą technik przetwarzania języka naturalnego (NLP), a następnie porównuje je z profilem użytkownika.
 
-CV Matcher AI to aplikacja webowa służąca do automatycznej analizy dopasowania CV do aktualnych ofert pracy IT.
+Projekt zrealizowany w ramach przedmiotu **Algorytmy Tekstowe**.
 
-System pobiera oferty pracy z wielu serwisów internetowych, analizuje ich treść z wykorzystaniem embeddingów semantycznych oraz porównuje je z przesłanym przez użytkownika CV.
+## 🚀 Architektura i zasada działania
 
-Projekt został wykonany w ramach przedmiotu:
+1. **Agregacja ofert (Web Scraping):** Aplikacja automatycznie pobiera aktualne ogłoszenia o pracę z serwisów takich jak OLX, Pracuj.pl oraz The Protocol.
+2. **Przetwarzanie dokumentów:** Użytkownik przesyła CV w formacie PDF lub TXT. System dokonuje ekstrakcji zawartości tekstowej.
+3. **Analiza semantyczna (AI/NLP):** Aplikacja przekształca tekst z CV oraz ofert pracy w wektorowe reprezentacje (embeddingi semantyczne) z wykorzystaniem modeli językowych. Ewaluacja dopasowania odbywa się poprzez obliczenie odległości kosinusowej (Cosine Similarity) pomiędzy wektorami oraz weryfikację pokrycia słów kluczowych.
+4. **Prezentacja wyników:** Użytkownik otrzymuje ranking najlepiej dopasowanych ofert, listę brakujących kompetencji technicznych oraz statystyki obrazujące aktualne zapotrzebowanie rynkowe.
 
-```text
-Algorytmy Tekstowe
-```
+## 🛠️ Wykorzystane technologie i biblioteki
 
----
+Architektura projektu opiera się na rozdziale warstwy logiki biznesowej (backend) oraz interfejsu użytkownika (frontend).
 
-# Główne funkcjonalności
+### Backend (Python)
+- **[FastAPI](https://fastapi.tiangolo.com/):** Wydajny framework do budowy interfejsu programistycznego aplikacji (REST API), zarządzający komunikacją z aplikacją kliencką.
+- **[Sentence-Transformers](https://www.sbert.net/):** Biblioteka oparta na frameworku PyTorch, dedykowana do generowania wektorowych reprezentacji tekstu (embeddingów). Umożliwia semantyczne, a nie jedynie leksykalne, dopasowanie profilu kandydata do wymagań zawartych w ofertach pracy.
+- **[Scikit-learn](https://scikit-learn.org/) & [NumPy](https://numpy.org/):** Narzędzia wykorzystywane do operacji na macierzach oraz obliczeń numerycznych, w tym wyznaczania miary Cosine Similarity.
+- **[PyMuPDF (fitz)](https://pymupdf.readthedocs.io/):** Biblioteka zapewniająca szybką i bezstratną ekstrakcję tekstu z dokumentów PDF przesyłanych przez użytkowników.
+- **[BeautifulSoup4](https://www.crummy.com/software/BeautifulSoup/) & [curl_cffi](https://curl-cffi.readthedocs.io/):** Moduły odpowiedzialne za proces web scrapingu. Biblioteka `curl_cffi` jest wykorzystywana do symulacji zachowania przeglądarek internetowych w celu ominięcia podstawowych mechanizmów anty-scrapingowych.
+- **SQLite:** Relacyjna baza danych wykorzystywana do lokalnego buforowania (cachowania) pobranych ofert pracy, co minimalizuje redundancję zapytań sieciowych i obciążenie scraperów.
 
-- scrapowanie ofert pracy z wielu źródeł,
-- analiza semantyczna ofert i CV,
-- obliczanie procentowego dopasowania,
-- wykrywanie brakujących technologii,
-- generowanie sugestii ulepszenia CV,
-- upload CV w formacie PDF,
-- ranking ofert pracy,
-- statystyki i wykresy technologii,
-- nowoczesny frontend React,
-- REST API oparte o FastAPI,
-- cache wyników,
-- analiza embeddingów semantycznych.
+### Frontend (React)
+- **[React](https://react.dev/) + [Vite](https://vitejs.dev/):** Nowoczesny stos technologiczny służący do budowy responsywnego interfejsu użytkownika (SPA).
+- **[TailwindCSS](https://tailwindcss.com/):** Framework CSS typu utility-first, pozwalający na implementację spójnego i modularnego systemu wizualnego.
+- **[Axios](https://axios-http.com/):** Klient HTTP obsługujący asynchroniczną komunikację z backendem.
+- **[Recharts](https://recharts.org/):** Biblioteka wizualizacyjna, stosowana do renderowania interaktywnych wykresów (m.in. statystyk popytu na określone technologie).
 
----
-
-# Zastosowane technologie
-
-## Backend
-
-- Python 3
-- FastAPI
-- SQLite
-- NumPy
-- requests
-- BeautifulSoup4
-- curl_cffi
-- PyMuPDF
-- sentence-transformers
-- scikit-learn
-
-## Frontend
-
-- React
-- Vite
-- TailwindCSS
-- Axios
-- Recharts
-
-## AI / NLP
-
-- Embeddingi semantyczne
-- Sentence Transformers
-- Cosine Similarity
-- Keyword Matching
-- Analiza technologii IT
-
----
-
-# Architektura systemu
+## 📂 Struktura repozytorium
 
 ```text
-PDF CV
-   ↓
-Ekstrakcja tekstu
-   ↓
-Scrapowanie ofert pracy
-   ↓
-Embeddingi semantyczne
-   ↓
-Analiza podobieństwa
-   ↓
-Ranking ofert
-   ↓
-Sugestie ulepszenia CV
-   ↓
-Frontend React
+Algorytmy-tekstowe/
+├── Algorytmy-tekstowe-scraper/   # Warstwa backendowa (API, baza danych, modele NLP)
+│   ├── api.py                    # Deklaracja punktów końcowych (endpoints) FastAPI
+│   ├── main.py                   # Główny algorytm dopasowywania CV
+│   ├── scraper*.py               # Moduły integrujące zewnętrzne portale ogłoszeniowe
+│   └── requirements.txt          # Zależności środowiska Python
+│
+└── Algorytmy-tekstowe-web/       # Warstwa frontendowa
+    ├── src/                      # Kod źródłowy komponentów interfejsu
+    ├── package.json              # Konfiguracja zależności Node.js
+    └── vite.config.js            # Konfiguracja procesu budowania Vite
 ```
 
----
+## 📸 Interfejs użytkownika
 
-# Źródła ofert pracy
+| Panel główny (Dashboard) | Ranking ofert |
+| :---: | :---: |
+| ![Dashboard](dashboard.png) | ![Offers](offers.png) |
 
-Projekt obsługuje:
+| Analiza i rekomendacje | Statystyki technologii |
+| :---: | :---: |
+| ![Advisor](advisor.png) | ![Chart](chart.png) |
 
-- OLX
-- Pracuj.pl
-- The Protocol
+## ⚙️ Instrukcja uruchomienia
 
-Każde źródło posiada dedykowany scraper.
-
----
-
-# Algorytm dopasowania
-
-System wykorzystuje hybrydowe podejście:
-
-## 1. Semantic Matching
-
-Treść CV i ofert pracy zamieniana jest na embeddingi semantyczne.
-
-Następnie obliczana jest miara podobieństwa:
-
-- cosine similarity,
-- analiza semantyczna kontekstu,
-- embeddingi sentence-transformers.
-
----
-
-## 2. Keyword Matching
-
-System wykrywa technologie występujące w:
-
-- CV,
-- ofertach pracy.
-
-Przykładowe technologie:
-
-- Python
-- SQL
-- Docker
-- React
-- AWS
-- Linux
-- FastAPI
-- Django
-- Machine Learning
-
----
-
-## 3. Hybrid Score
-
-Końcowy wynik dopasowania:
-
-```text
-Hybrid Score =
-70% semantic similarity
-+
-30% keyword overlap
-```
-
----
-
-# Funkcje AI
-
-## Sugestie ulepszenia CV
-
-Jeżeli system nie znajdzie ofert o odpowiednim dopasowaniu, generowane są sugestie:
-
-- brakujące technologie,
-- najczęściej pojawiające się wymagania,
-- rekomendacje rozwoju CV.
-
----
-
-# Upload PDF CV
-
-Użytkownik może przesłać własne CV w formacie PDF.
-
-System:
-- odczytuje tekst,
-- analizuje treść,
-- porównuje ją z aktualnymi ofertami pracy.
-
----
-
-# Interfejs użytkownika
-
-Frontend został wykonany w React + TailwindCSS.
-
-Aplikacja zawiera:
-
-- dashboard,
-- ranking ofert,
-- statystyki,
-- wykresy technologii,
-- modal szczegółów oferty,
-- loading/progress system.
-
----
-
-# Cache ofert
-
-System wykorzystuje prosty cache backendowy:
-- ogranicza ponowne scrapowanie,
-- przyspiesza kolejne zapytania,
-- zmniejsza obciążenie scraperów.
-
----
-
-# Statystyki i wykresy
-
-Frontend generuje wykresy:
-- najczęściej brakujących technologii,
-- dopasowania ofert,
-- trendów technologicznych.
-
----
-
-# Struktura projektu
-
-```text
-Algorytmy-tekstowe-scraper/
-│
-├── api.py
-├── main.py
-├── database.py
-├── skills.py
-├── cv_reader.py
-├── cv_advisor.py
-│
-├── scraper.py
-├── scraper_pracuj.py
-├── scraper_protocol.py
-│
-├── offers.db
-├── sample_cv.txt
-└── requirements.txt
-
-
-Algorytmy-tekstowe-web/
-│
-├── src/
-│   ├── components/
-│   │   ├── Navbar.jsx
-│   │   ├── SearchPanel.jsx
-│   │   ├── OfferCard.jsx
-│   │   ├── OfferModal.jsx
-│   │   ├── StatsCards.jsx
-│   │   └── SkillStats.jsx
-│   │
-│   ├── App.jsx
-│   └── main.jsx
-│
-├── package.json
-└── vite.config.js
-```
-
----
-
-# Miejsce na screenshoty
-
-## Dashboard
-
-![Dashboard](screenshots/dashboard.png)
-
----
-
-## Ranking ofert
-
-![Offers](screenshots/offers.png)
-
----
-
-## Analiza CV
-
-![Advisor](screenshots/advisor.png)
-
----
-
-## Szczegóły oferty
-
-![Modal](screenshots/modal.png)
-
----
-
-## Wykres technologii
-
-![Chart](screenshots/chart.png)
-
----
-
-# Instalacja projektu
-
-# 1. Klonowanie repozytorium
-
+### 1. Klonowanie repozytorium
 ```bash
-git clone <LINK_DO_REPO>
+git clone https://github.com/mateuszstoch/Algorytmy-tekstowe.git
+cd Algorytmy-tekstowe
 ```
 
----
-
-# 2. Backend — instalacja
-
-## Przejście do folderu backendu
-
+### 2. Uruchomienie środowiska backendowego
+Zalecane jest utworzenie izolowanego środowiska wirtualnego:
 ```bash
 cd Algorytmy-tekstowe-scraper
-```
-
----
-
-## Utworzenie virtualenv
-
-### Linux / WSL
-
-```bash
 python3 -m venv venv
+
+# Aktywacja środowiska (Linux / macOS):
 source venv/bin/activate
-```
+# Aktywacja środowiska (Windows):
+# venv\Scripts\activate
 
-### Windows
-
-```bash
-python -m venv venv
-venv\Scripts\activate
-```
-
----
-
-## Instalacja zależności
-
-```bash
 pip install -r requirements.txt
+uvicorn api:app --reload
 ```
+Serwer API zostanie uruchomiony na porcie lokalnym: `http://127.0.0.1:8000`.
+Interaktywna dokumentacja Swagger jest dostępna pod adresem: `http://127.0.0.1:8000/docs`.
 
----
-
-## Dodatkowe zależności backendu
-
+### 3. Uruchomienie środowiska frontendowego
+W nowej sesji terminala (przy działającym procesie backendu):
 ```bash
-pip install fastapi uvicorn python-multipart
-```
-
----
-
-# 3. Frontend — instalacja
-
-## Przejście do folderu frontendu
-
-```bash
-cd ../Algorytmy-tekstowe-web
-```
-
----
-
-## Instalacja zależności
-
-```bash
+cd Algorytmy-tekstowe-web
 npm install
-```
-
----
-
-## Dodatkowe biblioteki
-
-```bash
-npm install axios recharts
-```
-
----
-
-# Uruchamianie projektu
-
-# Backend
-
-W folderze:
-
-```text
-Algorytmy-tekstowe-scraper
-```
-
-uruchom:
-
-```bash
-uvicorn api:app --reload
-```
-
-Backend będzie dostępny pod:
-
-```text
-http://127.0.0.1:8000
-```
-
----
-
-# Dokumentacja API
-
-```text
-http://127.0.0.1:8000/docs
-```
-
----
-
-# Frontend
-
-W folderze:
-
-```text
-Algorytmy-tekstowe-web
-```
-
-uruchom:
-
-```bash
 npm run dev
 ```
+Aplikacja kliencka jest dostępna pod adresem: `http://localhost:5173`.
 
-Frontend będzie dostępny pod:
+## 👥 Zespół projektowy
 
-```text
-http://localhost:5173
-```
-
----
-
-# Uruchamianie projektu w WSL
-
-## Backend
-
-```bash
-cd /mnt/c/Users/<USER>/Desktop/algorytmy\ tekstowe/Algorytmy-tekstowe-scraper
-
-source venv/bin/activate
-
-uvicorn api:app --reload
-```
-
----
-
-## Frontend
-
-```bash
-cd /mnt/c/Users/<USER>/Desktop/algorytmy\ tekstowe/Algorytmy-tekstowe-web
-
-npm run dev
-```
-
----
-
-# Przykładowy workflow działania systemu
-
-1. Użytkownik przesyła CV PDF.
-2. System pobiera aktualne oferty pracy.
-3. Obliczane są embeddingi semantyczne.
-4. Generowany jest ranking dopasowania.
-5. System wyświetla:
-   - najlepsze oferty,
-   - brakujące technologie,
-   - sugestie ulepszenia CV.
-
----
-
-# Możliwe dalsze rozszerzenia
-
-- asynchroniczne scrapowanie,
-- deployment online,
-- Docker,
-- vector database,
-- autoryzacja użytkowników,
-- analiza wielu CV,
-- rekomendacje ścieżki kariery,
-- analiza trendów rynku pracy.
-
----
-
-# Autorzy projektu
-
-Projekt wykonany w ramach przedmiotu:
-
-```text
-Algorytmy Tekstowe
-```
+Projekt został zrealizowany w ramach przedmiotu akademickiego **Algorytmy Tekstowe**.
 
 Autorzy:
-- [IMIĘ I NAZWISKO]
-- [IMIĘ I NAZWISKO]
-- [IMIĘ I NAZWISKO]
+- Mateusz Stoch
+- Konrad Siemczyk
+- Julia Rzymowska
 - Adam Sokołowski
-
