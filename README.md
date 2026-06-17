@@ -1,6 +1,6 @@
 # CV Matcher
 
-Aplikacja internetowa przeznaczona do automatycznej analizy i ewaluacji dopasowania dokumentów aplikacyjnych (CV) do aktualnych ofert pracy w branży IT. System samodzielnie agreguje ogłoszenia z popularnych portali rekrutacyjnych, analizuje ich treść za pomocą technik przetwarzania języka naturalnego (NLP), a następnie porównuje je z profilem użytkownika.
+Aplikacja internetowa przeznaczona do automatycznej analizy i ewaluacji dopasowania dokumentów aplikacyjnych (CV) do aktualnych ofert pracy w branży IT. System samodzielnie agreguje ogłoszenia z popularnych portali rekrutacyjnych, analizuje ich treść za pomocą technik przetwarzania języka naturalnego (NLP), takich jak ekstrakcja słów kluczowych oraz semantyczne reprezentacje tekstu (embeddings), a następnie oblicza stopień dopasowania pomiędzy kandydatem a ofertami pracy.
 
 Projekt zrealizowany w ramach przedmiotu **Algorytmy Tekstowe**.
 
